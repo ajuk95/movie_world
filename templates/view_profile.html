@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!--  <h6>You are now logged in as {{user.username}} </h6>-->
+    <div class="container" style="display:flex;">
+      <a class="btn btn-secondary" href="{% url 'users:edit_profile' %}">Edit Profile</a>
+      <div class="spacer" style="flex-grow:1;"></div>
+      <a class="btn btn-secondary" href="{% url 'users:add_movie' %}">Add a movie</a>
+    </div>
+
+
+{% if movies_uploaded %}
+
+  <h3 class="text-center">Movies you added</h3><br>
+
+    <div>
+      <div class="container">
+        <div class="row mx-auto">
+          {% for movie in movies_uploaded %}
+            <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
+              <div class="card text-center" style="min-width:18rem;">
+                <a href="{{ movie.get_url }}"><img class="card-img-top my_image" src="{{ movie.image.url }}" style="height:250px;" alt="movie.name"></a>
+                <div class="card-body">
+                  <h4>{{ movie.name }}</h4>
+                  <p>{{ movie.release_date.year }}</p>
+                </div>
+              </div>
+              <div class="text-center">
+                <a class="btn btn-secondary" href="{% url 'users:edit_movie' movie.slug %}">Edit</a>
+                <a class="btn btn-danger" href="{% url 'users:delete_movie' movie.slug %}">Delete</a>
+              </div>
+              <br>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="mx-auto">
+          {% if movies.paginator.num_pages > 1 %}
+            <hr>
+            <div class="text-center">
+              {% for pg in movies.paginator.page_range %}
+                <a href="?page={{ pg }}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{ pg }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        <br>
+      </div>
+    </div>
+
+{% else %}
+
+  <h3 class="text-center">You have not added any movies</h3>
+
+{% endif %}
+
+
+{% endblock %}

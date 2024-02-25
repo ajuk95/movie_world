@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+
+  {% if category %}
+    {{ category.description | truncatewords:155 }}
+  {% else %}
+    Welcome to Movie World!
+  {% endif %}
+
+{% endblock %}
+
+
+
+{% block title %}
+
+  {% if category %}
+    {{ category.name }}
+  {% else %}
+    Movie World
+  {% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+  <div class="container">
+    <div class="row mx-auto">
+
+      {% if movies.object_list %}
+
+      {% for movie in movies.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4"><br>
+          <div class="card text-center" style="min-width:18rem;">
+            <a href="{{ movie.get_url }}"><img class="card-img-top my_image" src="{{ movie.image.url }}" style="height:250px;" alt="movie.name"></a>
+            <div class="card-body">
+              <h4>{{ movie.name }}</h4>
+              <p>{{ movie.release_date.year }}<br>
+              {{ movie.category }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="mx-auto">
+      {% if movies.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+          {% for pg in movies.paginator.page_range %}
+            <a href="?page={{ pg }}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{ pg }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% else %}
+
+      <div><br><h3 class="text-center">No movies</h3></div>
+
+      {% endif %}
+
+    </div>
+  </div>
+
+{% endblock %}

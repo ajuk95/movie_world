@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Add Movie</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="slug">Slug:</label>
+            <input type="text" class="form-control" id="slug" name="slug" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="release_date">Release Date:</label>
+            <input type="date" class="form-control" id="release_date" name="release_date" required>
+        </div>
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select class="form-control" id="category" name="category" required>
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" class="form-control-file" id="image" name="image">
+        </div>
+        <div class="form-group">
+            <label for="actors">Actors:</label>
+            <input type="text" class="form-control" id="actors" name="actors" required>
+        </div>
+        <div class="form-group">
+            <label for="trailer_link">Trailer Link:</label>
+            <input type="text" class="form-control" id="trailer_link" name="trailer_link">
+        </div>
+        <!-- Add other fields as needed (category, image, actors, trailer_link, etc.) -->
+        <button type="submit" class="btn btn-secondary">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

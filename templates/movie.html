@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+
+    {{ movie.description|truncatewords:155 }}
+
+{% endblock %}
+
+
+
+{% block title %}
+
+  {% if category %}
+    {{ movie.name }} - Movie World
+  {% endif %}
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<!--<br>-->
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center" style="margin-top:20px;">
+          <div style="min-width:18rem;">
+            <img src="{{ movie.image.url }}" alt="{{ movie.name }}" style="height:300px; width=auto;">
+          </div>
+          <br>
+          <div class="">
+                    <form method="post" action="{% url 'movies:movies_category_detail' movie.category.slug movie.slug %}">
+                        {% csrf_token %}
+                        <label for="rating">Rate this movie:</label><br>
+                        <input type="radio" id="rating1" name="rating" value="1">
+                        <label for="rating1">1</label>
+                        <input type="radio" id="rating2" name="rating" value="2">
+                        <label for="rating2">2</label>
+                        <input type="radio" id="rating3" name="rating" value="3">
+                        <label for="rating3">3</label>
+                        <input type="radio" id="rating4" name="rating" value="4">
+                        <label for="rating4">4</label>
+                        <input type="radio" id="rating5" name="rating" value="5">
+                        <label for="rating5">5</label><br>
+                        <input class="btn btn-secondary" type="submit" value="Submit">
+                    </form>
+          </div>
+          <!-- Form for submitting comments -->
+          <div class="" style="padding-bottom:10px;">
+                    <form method="post" action="{% url 'movies:movies_category_detail' movie.category.slug movie.slug %}">
+                        {% csrf_token %}
+                        <label for="comment">Leave a comment:</label><br>
+                        <textarea style="margin-bottom:10px;" id="comment" name="comment" rows="4" cols="50"></textarea><br>
+                        <input class="btn btn-secondary" type="submit" value="Submit">
+                    </form>
+          </div>
+        </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+          <div>
+            <h1 class="my_prod_title">{{ movie.name }}</h1>
+            <p> {{ movie.release_date.year }}</p>
+            <p class="text-justify my_prod_text"> {{ movie.description }}</p>
+            <p class="text-justify my_prod_text"> Genre : {{ movie.category }}</p>
+            <p class="text-justify my_prod_text"> Starring : {{ movie.actors }}</p>
+            <div>
+              <a class="btn btn-secondary" href="{{ movie.trailer_link }}" target="_blank">Watch trailer</a>
+              {% if average_rating %}
+                <button class="btn btn-secondary">{{ average_rating }}</button>
+              {% endif %}
+            </div>
+          </div>
+          <br>
+          <div>
+                    {% if ratings %}
+                        <h6>Ratings</h6>
+                        {% for rating in ratings %}
+                            <div class="user-rating" style="margin-bottom:10px;">
+                                {{ rating.user }}
+                                <div class="ratings" style="font-size:0;">
+                                    {% for i in stars_range %}
+                                        {% if i <= rating.value %}
+                                            <span class="star" style="color:gold; font-size:20px;">&#9733;</span>
+                                        {% else %}
+                                            <span class="star">&#9734;</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        No ratings yet
+                    {% endif %}
+          </div>
+          <div>
+                      {% if comments %}
+                        <h6>Reviews</h6>
+                        {% for comment in comments %}
+                          <li>{{ comment.user }} - {{ comment.content }}</li>
+                        {% endfor %}
+                      {% else %}
+                        No reviews yet
+                      {% endif %}
+          </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

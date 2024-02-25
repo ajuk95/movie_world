@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <br>
+                <div class="card">
+                    <div class="card-header text-center">
+                        Register
+                    </div>
+                    <div class="card-body text-center">
+                        <form action="register" method="post">
+                            {% csrf_token %}
+                            <div><input type="text" name="username" placeholder="username"></div>
+                            <div><input type="text" name="firstname" placeholder="first name"></div>
+                            <div><input type="text" name="lastname" placeholder="last name"></div>
+                            <div><input type="email" name="email" placeholder="e-mail"></div>
+                            <div><input type="password" name="password" placeholder="enter password"></div>
+                            <div><input type="password" name="password1" placeholder="confirm password"></div><br>
+                            <div><button type="submit" class="btn btn-secondary">Register</button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="text-center" style="color:red;">
+    {% for msg in messages %}
+        {{ msg }}
+    {% endfor %}
+    </div>
+
+
+{% endblock %}
