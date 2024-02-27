@@ -30,34 +30,35 @@ def login(request):
 def register(request):
     # return HttpResponse("hi")
     if request.method == "POST":
-        username = request.POST['username']
-        firstname = request.POST['firstname']
-        lastname = request.POST['lastname']
-        email = request.POST['email']
-        password = request.POST['password']
-        password1 = request.POST['password1']
-        if password == password1:
-            if User.objects.filter(username=username).exists():
-                messages.info(request, "username already exists")
-                return redirect(reverse("credentials:register"))
-            elif User.objects.filter(email=email).exists():
-                messages.info(request, "email already exists")
-                return redirect(reverse("credentials:register"))
+        try:
+            username = request.POST['username']
+            firstname = request.POST['firstname']
+            lastname = request.POST['lastname']
+            email = request.POST['email']
+            password = request.POST['password']
+            password1 = request.POST['password1']
+            if username and email and password and password1 and password == password1:
+                if User.objects.filter(username=username).exists():
+                    messages.info(request, "username already exists")
+                    return redirect(reverse("credentials:register"))
+                elif User.objects.filter(email=email).exists():
+                    messages.info(request, "email already exists")
+                    return redirect(reverse("credentials:register"))
+                else:
+                    user = User.objects.create_user(username=username, password=password, first_name=firstname, last_name=lastname, email=email)
+                    user.save()
+                    print("user registered:", user)
+
+                    # send a welcome message to the registered email
+                    send_welcome_email(email, username)
+                    print("welcome message sent to", email)
+
+                    return redirect(reverse("credentials:login"))
             else:
-                user = User.objects.create_user(username=username, password=password, first_name=firstname, last_name=lastname, email=email)
-                user.save()
-                print("user registered:", user)
-
-                # send a welcome message to the registered email
-                send_welcome_email(email, username)
-                print("welcome message sent to", email)
-
-                return redirect(reverse("credentials:login"))
-        else:
-            messages.info(request, "passwords not matching")
-            print("passwords not matching")
-            return redirect(reverse("credentials:register"))
-        # return redirect('/movies')
+                messages.info(request, "invalid credentials")
+                return redirect(reverse("credentials:register"))
+        except:
+            messages.info(request, "invalid credentials")
     return render(request, "register.html")
 
 

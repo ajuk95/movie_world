@@ -23,10 +23,10 @@
             </div>
         </div>
     </div>
-    <br>
     <div class="text-center" style="color:red;">
     {% for msg in messages %}
         {{ msg }}
     {% endfor %}
     </div>
+    <p class="text-center">Not registered? <a href="{% url 'credentials:register' %}">Register</a> here</p>
 {% endblock %}

@@ -3,12 +3,28 @@
 
 {% block content %}
 <!--  <h6>You are now logged in as {{user.username}} </h6>-->
-    <div class="container" style="display:flex;">
-      <a class="btn btn-secondary" href="{% url 'users:edit_profile' %}">Edit Profile</a>
-      <div class="spacer" style="flex-grow:1;"></div>
-      <a class="btn btn-secondary" href="{% url 'users:add_movie' %}">Add a movie</a>
-    </div>
+    <div class="container"><br>
 
+          <div class="profile-card">
+              <div class="card-header">
+                  <h2>User Profile</h2>
+              </div>
+              <div class="card-body">
+                  <div class="profile-info">
+                      <div><strong>Username:</strong> {{ user.username }}</div>
+                      <div><strong>First Name:</strong> {{ user.first_name }}</div>
+                      <div><strong>Last Name:</strong> {{ user.last_name }}</div>
+                      <div><strong>Email:</strong> {{ user.email }}</div><br>
+                      <div>
+                          <a class="btn btn-secondary" href="{% url 'users:edit_profile' %}">Edit Profile</a>
+                          <a class="btn btn-secondary" href="{% url 'users:add_movie' %}">Add a movie</a>
+                      </div>
+                      <!-- Add more profile information fields as needed -->
+                  </div>
+              </div>
+          </div>
+
+    </div>
 
 {% if movies_uploaded %}
 

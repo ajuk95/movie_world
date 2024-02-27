@@ -3,11 +3,7 @@
 
 {% block metadescription %}
 
-  {% if category %}
-    {{ category.description | truncatewords:155 }}
-  {% else %}
-    Welcome to Movie World!
-  {% endif %}
+    Explore the best collection of movies!
 
 {% endblock %}
 
@@ -29,10 +25,24 @@
   <div class="container">
     <div class="row mx-auto">
 
+      {% if user.is_authenticated %}
+          <div>
+              <!-- Content to display when user is logged in -->
+              <p class="text-center">
+                <a class="btn btn-secondary" href="{% url 'users:view_profile' user.username %}">VIEW PROFILE</a>
+                <a class="btn btn-secondary" href="{% url 'users:add_movie' %}">ADD MOVIE</a>
+              </p>
+          </div>
+      {% else %}
+          <div>
+            <p style="font-size:12;">To add movie, please <a href="{% url 'credentials:login' %}">login</a></p>
+          </div>
+      {% endif %}
+
       {% if movies.object_list %}
 
       {% for movie in movies.object_list %}
-        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4"><br>
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
           <div class="card text-center" style="min-width:18rem;">
             <a href="{{ movie.get_url }}"><img class="card-img-top my_image" src="{{ movie.image.url }}" style="height:250px;" alt="movie.name"></a>
             <div class="card-body">
